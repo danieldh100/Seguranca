@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <math.h>
 
 int main(){
   FILE *fp;
@@ -27,7 +28,7 @@ int main(){
 
     srand( (unsigned)time(NULL) );                       	// Sincronizando com o relógio do computador para evitar repetição de números; 
     for(i=0;i<256;i++){
-      x[i]=rand() % 256;
+      x[i]= rand() % 256;
      // x[i]=i;											//Gerar números aleatórios
     }
 
@@ -48,13 +49,13 @@ int main(){
     fread(x,sizeof (int),256,randkey);				/*Lendo a chave*/
     int dec[256];	
     for(i=0;i<256;i++){
-      int temp = x[i];
+      int temp = abs(x[i]);
       printf("%d\n",temp);
       dec[temp]=i;
     }
     for(i=0;i<lenstr;i++){
       int temp = (string[i] + 256) % 256;
-      string[i] = dec[temp];
+      string[i] = abs(dec[temp]);
 	printf(" %d \n",temp);
     }
     for(i=0;i<lenstr;i++)
