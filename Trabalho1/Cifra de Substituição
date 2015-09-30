@@ -28,8 +28,15 @@ int main(){
 
     srand( (unsigned)time(NULL) );                       	// Sincronizando com o relógio do computador para evitar repetição de números; 
     for(i=0;i<256;i++){
-      x[i]= rand() % 256;
+      x[i]= i;
+//rand() % 256;
      // x[i]=i;											//Gerar números aleatórios
+    }
+    for(i=255; i > 0; i--) {
+       int r = rand() % i;
+       char aux = x[i];
+       x[i] = x[r];
+       x[r] = aux;
     }
 
     fwrite(x,sizeof(int),256, randkey);  		      				
@@ -49,7 +56,7 @@ int main(){
     fread(x,sizeof (int),256,randkey);				/*Lendo a chave*/
     int dec[256];	
     for(i=0;i<256;i++){
-      int temp = abs(x[i]);
+      int temp = (x[i]+256)%256;
       printf("%d\n",temp);
       dec[temp]=i;
     }
@@ -62,6 +69,7 @@ int main(){
 	printf("%c",string[i]);
     printf("\n\n");
     for(i=0;i<lenstr;i++)
+	
 	printf(" %d \n",string[i]);
     fwrite(string, sizeof(char), lenstr, decifrado);	  //Gravando números aleatórios;
   }    
