@@ -2,23 +2,14 @@
 //Aluno: Daniel Maicon Lauermann.
 #include <stdio.h>
 #include <stdlib.h>
-#include <locale.h>
-#include <vector>
 #include <string.h>
-#include <windows.h>
 
-using namespace std;
-
-
-//read - fwrite
 
 void cifrar(char *l, int key, int lenstr,char* nome){
-    int i=0, f=0,j=0,y=0;
+    int i=0,j=0,y=0;
     float nfloat=0;
     FILE *arq1;
-
     arq1 = fopen(nome,"w");
-
 
 		nfloat =lenstr/key;
 		y=nfloat;
@@ -26,10 +17,8 @@ void cifrar(char *l, int key, int lenstr,char* nome){
 		if (key*y!=lenstr)
 			y+=1;
 
-
 		printf("\nlenstr: %d = Y: %d * key: %d\n\n",lenstr,y,key);
-		system("pause");
-
+		
 		char mat[y*key+lenstr];
 		for(i=0;i<lenstr;i++)
 			mat[i]='0';
@@ -38,77 +27,54 @@ void cifrar(char *l, int key, int lenstr,char* nome){
 			for(j=0;j<y;j++){
 				mat[(i*y)+j]= l[(j*key)+i];
 			}
-		printf("%s",mat);
+		//printf("%s",mat);
 	    for(i=0;i<lenstr; i++){
 		 putc(mat[i], arq1);
   	    }
-
-		printf("%d %2f",y,nfloat);
-		system("pause");
-
+	printf("%d %2f\n\n",y,nfloat);
 	fclose(arq1);
 
 }
 
 void decifrar(char *l , int key, int lenstr,char* nome){
-    int i,y=0,j;
+    int y=0;
     float nfloat;
 
-	nfloat =lenstr/key;
-		y=nfloat;
-		if (key*y!=lenstr)
-			y+=1;
-		printf("%d %2f",y,nfloat);
-		system("pause");
-
-
-
+    nfloat =lenstr/key;
+    y=nfloat;
+    if (key*y!=lenstr)
+       y+=1;
+    printf("%d %2f\n\n",y,nfloat);
     cifrar(l,y,lenstr,nome);
 }
 
 int main()
 {
-   setlocale(LC_ALL, "Portuguese");
    FILE *fp;
-   char *string=NULL;
-   int i=0, key=0, menu=0, lenstr=0;
-   char ch;
-   printf("Seus dados de entrada devem estar contidos no arquivo 'entrada.txt'\n\n");
+   char *string = malloc(1024*1024*1024);
+   int key=0, menu=0, lenstr=0;
+  
    printf("Tecle 1 para cifrar e 2 para decifrar: ");
    scanf("%d",&menu);
 
    fp = fopen("entrada.txt","a+");
-   if(!fp)
-    {
-      printf( "Erro na abertura do arquivo");
-      exit(0);
-    }
-    while((ch=fgetc(fp)) != EOF){
-        string = (char *)realloc(string, (++lenstr) * sizeof(char));
-    	string[lenstr - 1] = ch;
-    }
-	while(1){
 
-	printf("Entre com a chave: ");
-   	scanf("%d",&key);
-   	fflush(stdin);
-    if(key>lenstr){
-    	printf("Sua Key é maior que o tamanho do texto");
-    	Sleep(1300);
-    	system("cls");
-    }
-    else
-    	break;
+   if(fp != NULL){
+         	while(!feof(fp)){        
+		     fread(&((string[lenstr])),1,1,fp);
+		     lenstr++;
+                }
    }
-    if(menu==1){
-    cifrar(string, key, lenstr, "cifrado.txt");
-	system("cls");
-	printf("\n\nArquivo cifrado com sucesso, verifique a saída no arquivo 'cifrado.txt'\n\n");
-	}
-	else if(menu==2){
-    decifrar(string, key, lenstr,"decifrado.txt");
-    system("cls");
-    printf("\n\nArquivo decifrado com sucesso, verifique a saída no arquivo 'decifrado.txt'\n\n");
-	}
+   printf("\n\nEntre com a chave: ");
+   scanf("%d",&key);
+   fflush(stdin);
+
+    if(menu==1)
+      cifrar(string, key, lenstr, "cifrado.txt");
+	
+    else if(menu==2)
+      decifrar(string, key, lenstr,"decifrado.txt");
+   
+	
    return 0;
 }
