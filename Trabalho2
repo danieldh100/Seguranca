@@ -1,0 +1,80 @@
+//Segurança e Auditoria de Sistemas.
+//Aluno: Daniel Maicon Lauermann.
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+
+void cifrar(char *l, int key, int lenstr,char* nome){
+    int i=0,j=0,y=0;
+    float nfloat=0;
+    FILE *arq1;
+    arq1 = fopen(nome,"w");
+
+		nfloat =lenstr/key;
+		y=nfloat;
+
+		if (key*y!=lenstr)
+			y+=1;
+
+		printf("\nlenstr: %d = Y: %d * key: %d\n\n",lenstr,y,key);
+		
+		char mat[y*key+lenstr];
+		for(i=0;i<lenstr;i++)
+			mat[i]='0';
+
+		for(i=0;i<key;i++)
+			for(j=0;j<y;j++){
+				mat[(i*y)+j]= l[(j*key)+i];
+			}
+		//printf("%s",mat);
+	    for(i=0;i<lenstr; i++){
+		 putc(mat[i], arq1);
+  	    }
+	printf("%d %2f\n\n",y,nfloat);
+	fclose(arq1);
+
+}
+
+void decifrar(char *l , int key, int lenstr,char* nome){
+    int y=0;
+    float nfloat;
+
+    nfloat =lenstr/key;
+    y=nfloat;
+    if (key*y!=lenstr)
+       y+=1;
+    printf("%d %2f\n\n",y,nfloat);
+    cifrar(l,y,lenstr,nome);
+}
+
+int main()
+{
+   FILE *fp;
+   char *string = malloc(1024*1024*1024);
+   int key=0, menu=0, lenstr=0;
+  
+   printf("Tecle 1 para cifrar e 2 para decifrar: ");
+   scanf("%d",&menu);
+
+   fp = fopen("entrada.txt","a+");
+
+   if(fp != NULL){
+         	while(!feof(fp)){        
+		     fread(&((string[lenstr])),1,1,fp);
+		     lenstr++;
+                }
+   }
+   printf("\n\nEntre com a chave: ");
+   scanf("%d",&key);
+   fflush(stdin);
+
+    if(menu==1)
+      cifrar(string, key, lenstr, "cifrado.txt");
+	
+    else if(menu==2)
+      decifrar(string, key, lenstr,"decifrado.txt");
+   
+	
+   return 0;
+}
