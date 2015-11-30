@@ -1,0 +1,44 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+int main(){
+	
+	FILE *crip;
+	FILE *decrip;
+	FILE *chave;
+	char cifrado[815345];
+	char decifrado[815345];
+	int cont=0;
+	
+	chave = fopen("Key.txt","w");
+	crip = fopen("pg74.txt.enc","rw");
+	decrip = fopen("pg74.txt","rw");
+
+	 if(crip != NULL){
+         	while(!feof(crip)){        
+			fread(&((cifrado[cont])),1,1,crip);
+			cont++;		
+                }
+        }
+        cont=0;
+	if(decrip != NULL){
+		while(!feof(decrip)){        
+                	fread(&((decifrado[cont])),1,1,decrip);
+                        cont++;
+                }
+        }
+	int i, cifradoint[cont],decifradoint[cont];
+	char key[256];
+	for( i=0;i<cont;i++){
+	cifradoint[i] = (cifrado[i]+256)%256;
+	decifradoint[i] = (decifrado[i]+256)%256;
+	}
+	for( i=0;i<cont;i++){       
+	key[cifradoint[i]] = decifradoint[i];
+	}
+	
+	fwrite(key,sizeof(char),256, chave);
+	
+	return 0;
+}			
