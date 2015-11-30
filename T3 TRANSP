@@ -1,0 +1,115 @@
+#include <cstdio>
+#include <map>
+#include <iostream>
+#include <cstdlib>
+#include <string>
+#include <fstream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+int avalia(const map<string, int> & dici, const vector<char> & deci) {
+	vector<string> palavras;
+	int i, j,acerto=0;
+	string palavra = "";
+	for(char c : deci) {
+		if ( c == ' ' /*|| c == '/n'*/) {
+			palavras.push_back(palavra);
+			palavra = "";
+		}
+		else {
+			palavra += c;
+		}
+	
+	}
+	for(i=0;i<palavras.size();i++){
+	//cout << palavras[i];
+	//cin.get();
+	}
+		
+
+
+/*
+	for(j=0; j<5030; i++){
+	for(i=0; i<palavras.size(); i++)
+		if(palavra[j] == dici[i])
+			acerto ++;	
+	}		
+
+*/
+
+	return 11;
+}
+
+const vector<char> decifra(const vector<char> & v, int k) {
+	vector<char> mat(v.size() +k);
+	
+	int i=0,j=0,y=0,cont=0,posicao=0,key=55,lenstr,aux,aux2;
+	float nfloat=0;
+	lenstr = v.size();
+	
+	nfloat =lenstr/key;
+        y=nfloat;
+	printf("%d %2f\n\n",y,nfloat);
+        if (key*y!=lenstr)
+            y+=1;
+						 // l = o conteúdo da arquivo;
+	nfloat =lenstr/key;			 // lenstr = Quantidade de caracteres no arquivo;
+	y=nfloat;	   		         // y = Colunas;
+	printf("%d %2f\n\n",y,nfloat);
+	if (key*y!=lenstr)
+		y+=1;
+
+	for(i=0;i<lenstr;i++)
+		mat[i]='0';
+
+	for(i=0;i<key;i++)
+		for(j=0;j<y;j++){
+			mat[(i*y)+j]= v[(j*key)+i];				
+		}
+		
+	
+	printf("\n\n\nKey = %d\n\n\n",key);
+	
+	
+	return mat;
+
+}
+
+int main(){
+
+	map < string, int> dicionario;
+	vector < char > cifrado;
+	ifstream dici("dici.txt");
+	ifstream crip("pg1661.txt", ifstream::binary);
+   
+
+
+	while(!crip.eof()){
+		char c;
+	        crip.read(&c, 1);
+		cifrado.push_back(c);
+	}   
+	string palavra;
+	while (dici >> palavra){
+		dicionario[palavra]=1;
+	}
+
+	for(int i = 1; i < cifrado.size(); ++i) {
+
+		vector < char > decifrado = decifra( cifrado, i );
+		if (avalia(dicionario, decifrado) > 10) {
+			cout << "Decifrou!!. A chave e': " << i << endl;
+for(char d: decifrado){
+			cout << d;
+		}
+			break; 
+		}
+		
+
+
+	}
+
+
+}
+
