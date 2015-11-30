@@ -1,0 +1,49 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+int main(){
+	
+	FILE *crip;
+	FILE *decrip;
+	char cifrado[815345];
+	char decifrado[815345];
+	int cont=0;
+	
+	
+	crip = fopen("pg27827.txt.enc","rw");
+	decrip = fopen("pg27827.txt","rw");
+//174 - 174
+	 if(crip != NULL){
+         	while(!feof(crip)){        
+			fread(&((cifrado[cont])),1,1,crip);
+			//if(cifrado[0] != '\0') 
+			cont++;
+			//printf("%d\n",cont);
+                }
+        }
+        cont=0;
+	if(decrip != NULL){
+		while(!feof(decrip)){        
+                	fread(&((decifrado[cont])),1,1,decrip);
+                        cont++;
+                }
+        }
+	int i,key[cont];
+	for( i=0;i<cont;i++){       
+	key[i] = (cifrado[i] - decifrado[i] + 256) % 256;
+	}
+	//int i=0;
+	/*for(i=0;i<cont;i++){
+		for(key=0;key<256;key++)					
+			if((cifrado[0]-key[i%strlen(key)])%256 == decifrado[0]){
+				break;														
+			} 			
+	}
+	*/
+	printf("/n");
+	for( i=0;i<cont;i++)
+	printf("%c ",key[i]);
+	//printf("\n\ncif=%x\ndec=%x\n",abs(cifrado[0]-key),abs(decifrado[0]));
+	return 0;
+}			
